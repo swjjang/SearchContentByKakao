@@ -21,3 +21,30 @@ sealed class ApiResult<T> {
         }
     }
 }
+
+inline fun <T> ApiResult<T>.onLoading(
+    action: (loading: ApiResult.Loading) -> Unit
+): ApiResult<T> {
+    if (this is ApiResult.Loading) {
+        action(this)
+    }
+    return this
+}
+
+inline fun <T> ApiResult<T>.onSuccess(
+    action: (value: T) -> Unit
+): ApiResult<T> {
+    if (this is ApiResult.Success) {
+        action(data)
+    }
+    return this
+}
+
+inline fun <T> ApiResult<T>.onError(
+    action: (error: ApiResult.Error) -> Unit
+): ApiResult<T> {
+    if (this is ApiResult.Error) {
+        action(this)
+    }
+    return this
+}
