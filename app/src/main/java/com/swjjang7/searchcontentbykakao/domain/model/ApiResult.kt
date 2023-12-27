@@ -1,8 +1,6 @@
 package com.swjjang7.searchcontentbykakao.domain.model
 
 sealed class ApiResult<T> {
-    data object Loading : ApiResult<Nothing>()
-
     data class Success<T>(val data: T) : ApiResult<T>()
 
     sealed class Error : ApiResult<Nothing>() {
@@ -13,22 +11,12 @@ sealed class ApiResult<T> {
 
     override fun toString(): String {
         return when (this) {
-            is Loading -> "[Loading]"
             is Success<T> -> "[Success] $data"
             is Error.Http -> "[Error.Http] $code, $message"
             is Error.Network -> "[Error.Network] $throwable"
             is Error.Unknown -> "[Error.Unknown] $throwable"
         }
     }
-}
-
-inline fun <T> ApiResult<T>.onLoading(
-    action: (loading: ApiResult.Loading) -> Unit
-): ApiResult<T> {
-    if (this is ApiResult.Loading) {
-        action(this)
-    }
-    return this
 }
 
 inline fun <T> ApiResult<T>.onSuccess(
