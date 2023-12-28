@@ -1,6 +1,6 @@
 package com.swjjang7.searchcontentbykakao.domain.model
 
-sealed class ApiResult<T> {
+sealed class ApiResult<out T> {
     data class Success<T>(val data: T) : ApiResult<T>()
 
     sealed class Error : ApiResult<Nothing>() {
