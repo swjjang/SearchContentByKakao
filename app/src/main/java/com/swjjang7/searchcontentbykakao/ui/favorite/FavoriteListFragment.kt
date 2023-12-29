@@ -32,6 +32,7 @@ class FavoriteListFragment : BaseFragment<FragmentFavoriteBinding, FavoriteViewM
     }
 
     override fun initLayout(binding: FragmentFavoriteBinding) {
+        binding.recyclerView.itemAnimator = null
     }
 
     override fun initViewModel(binding: FragmentFavoriteBinding, viewModel: FavoriteViewModel) {
