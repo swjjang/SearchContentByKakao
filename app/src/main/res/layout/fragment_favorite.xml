@@ -27,8 +27,6 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:adapter="@{adapter}"
             android:orientation="vertical"
             android:visibility="@{vm.contents == null || vm.contents.size() == 0 ? View.GONE : View.VISIBLE}"

@@ -16,7 +16,6 @@ fun loadImage(view: AppCompatImageView, url: String?) {
         .load(url)
         .placeholder(R.drawable.baseline_downloading_50)
         .error(R.drawable.baseline_error_250)
-        .transform(RoundedCorners(10))
         .into(view)
 }
 
