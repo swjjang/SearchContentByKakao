@@ -1,7 +1,8 @@
-package com.swjjang7.searchcontentbykakao
+package com.swjjang7.searchcontentbykakao.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.swjjang7.searchcontentbykakao.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
