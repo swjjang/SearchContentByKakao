@@ -1,9 +1,14 @@
 package com.swjjang7.searchcontentbykakao.ui.favorite
 
+import androidx.fragment.app.activityViewModels
 import com.swjjang7.searchcontentbykakao.R
 import com.swjjang7.searchcontentbykakao.databinding.FragmentFavoriteBinding
+import com.swjjang7.searchcontentbykakao.domain.model.FavoriteContent
 import com.swjjang7.searchcontentbykakao.ui.base.BaseFragment
+import com.swjjang7.searchcontentbykakao.ui.base.ShareViewModel
+import com.swjjang7.searchcontentbykakao.ui.extension.repeatOnStarted
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class FavoriteListFragment : BaseFragment<FragmentFavoriteBinding, FavoriteViewModel>(
@@ -13,6 +18,8 @@ class FavoriteListFragment : BaseFragment<FragmentFavoriteBinding, FavoriteViewM
     companion object {
         fun newInstance() = FavoriteListFragment()
     }
+
+    private val shareViewModel: ShareViewModel by activityViewModels()
 
     private val listAdapter by lazy {
         FavoriteListAdapter(viewModel)
@@ -28,5 +35,18 @@ class FavoriteListFragment : BaseFragment<FragmentFavoriteBinding, FavoriteViewM
     }
 
     override fun initViewModel(binding: FragmentFavoriteBinding, viewModel: FavoriteViewModel) {
+        repeatOnStarted {
+            shareViewModel.share.collectLatest {
+                (it as? List<FavoriteContent>)?.let { list ->
+                    viewModel.updateFavoriteContents(list)
+                }
+            }
+        }
+
+        repeatOnStarted {
+            viewModel.favoriteUpdate.collectLatest {
+                shareViewModel.invokeUpdateNotify()
+            }
+        }
     }
 }

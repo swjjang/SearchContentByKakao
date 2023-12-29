@@ -3,6 +3,7 @@ package com.swjjang7.searchcontentbykakao.ui.search
 import androidx.lifecycle.viewModelScope
 import com.swjjang7.searchcontentbykakao.domain.model.Content
 import com.swjjang7.searchcontentbykakao.domain.model.ContentType
+import com.swjjang7.searchcontentbykakao.domain.model.FavoriteContent
 import com.swjjang7.searchcontentbykakao.domain.model.asFavoriteContent
 import com.swjjang7.searchcontentbykakao.domain.model.onError
 import com.swjjang7.searchcontentbykakao.domain.model.onSuccess
@@ -14,7 +15,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,6 +34,9 @@ class SearchViewModel @Inject constructor(
 
     private val _contents = MutableStateFlow<List<Content>>(emptyList())
     val contents: StateFlow<List<Content>> = _contents
+
+    private val _favoriteUpdate = MutableSharedFlow<Boolean>()
+    val favoriteUpdate: SharedFlow<Boolean> = _favoriteUpdate
 
     private lateinit var inputTextJob: Job
 
@@ -102,8 +108,6 @@ class SearchViewModel @Inject constructor(
                 fetchContents(requestParam)
             }
         }
-
-
     }
 
     fun changeFavoriteContent(content: Content) {
@@ -113,7 +117,36 @@ class SearchViewModel @Inject constructor(
             } else {
                 addFavoriteContentsUseCase(content.asFavoriteContent())
             }
+
+            _favoriteUpdate.emit(true)
         }
+    }
+
+    fun updateFavoriteContents(list: List<FavoriteContent>) {
+        viewModelScope.launch(exceptionHandler) {
+            val newList = contents.value.toMutableList().map { content ->
+                val isFavorite = list.hasItem(content)
+
+                if (content.isFavorite != isFavorite) {
+                    content.copy(isFavorite = isFavorite)
+                } else {
+                    content
+                }
+            }
+
+            _contents.emit(newList)
+        }
+    }
+
+    private fun FavoriteContent.same(content: Content): Boolean {
+        return imageUrl == content.imageUrl
+                && type == content.type
+                && dateTime == content.dateTime
+    }
+
+    private fun List<FavoriteContent>.hasItem(content: Content): Boolean {
+        val item = find { it.same(content) }
+        return item != null
     }
 
     fun nextPageLoadable(position: Int): Boolean {

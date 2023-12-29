@@ -9,7 +9,9 @@ import com.swjjang7.searchcontentbykakao.domain.usecase.GetFavoriteContentsUseCa
 import com.swjjang7.searchcontentbykakao.domain.usecase.RemoveFavoriteContentsUseCase
 import com.swjjang7.searchcontentbykakao.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -17,35 +19,47 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
-    private val getFavoriteContentsUseCase: GetFavoriteContentsUseCase,
+//    private val getFavoriteContentsUseCase: GetFavoriteContentsUseCase,
     private val removeFavoriteContentsUseCase: RemoveFavoriteContentsUseCase,
 ) : BaseViewModel() {
     private val _contents = MutableStateFlow<List<FavoriteContent>>(emptyList())
     val contents: StateFlow<List<FavoriteContent>> = _contents
 
-    private fun fetchFavoriteContents() {
-        showLoading(true)
+    private val _favoriteUpdate = MutableSharedFlow<Boolean>()
+    val favoriteUpdate: SharedFlow<Boolean> = _favoriteUpdate
 
-        viewModelScope.launch(exceptionHandler) {
-            getFavoriteContentsUseCase().catch {
-                emit(
-                    ApiResult.Error.Unknown(it)
-                )
-            }.collect { result ->
-                result.onSuccess {
-                    showLoading(false)
-                    _contents.emit(it)
-                }.onError {
-                    showLoading(false)
-                    showToast(it.toString())
-                }
-            }
-        }
-    }
+    // MainViewModel 에서 처리하도록 변경 됨
+//    private fun fetchFavoriteContents() {
+//        showLoading(true)
+//
+//        viewModelScope.launch(exceptionHandler) {
+//            getFavoriteContentsUseCase().catch {
+//                emit(
+//                    ApiResult.Error.Unknown(it)
+//                )
+//            }.collect { result ->
+//                result.onSuccess {
+//                    showLoading(false)
+//                    _contents.emit(it)
+//                }.onError {
+//                    showLoading(false)
+//                    showToast(it.toString())
+//                }
+//            }
+//        }
+//    }
 
     fun removeFavoriteContent(favoriteContent: FavoriteContent) {
         viewModelScope.launch(exceptionHandler) {
             removeFavoriteContentsUseCase(favoriteContent)
+
+            _favoriteUpdate.emit(true)
+        }
+    }
+
+    fun updateFavoriteContents(list: List<FavoriteContent>) {
+        viewModelScope.launch(exceptionHandler) {
+            _contents.emit(list)
         }
     }
 }

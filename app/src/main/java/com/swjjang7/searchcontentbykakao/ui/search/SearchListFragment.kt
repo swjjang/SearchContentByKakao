@@ -1,11 +1,16 @@
 package com.swjjang7.searchcontentbykakao.ui.search
 
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.swjjang7.searchcontentbykakao.R
 import com.swjjang7.searchcontentbykakao.databinding.FragmentSearchBinding
+import com.swjjang7.searchcontentbykakao.domain.model.FavoriteContent
 import com.swjjang7.searchcontentbykakao.ui.base.BaseFragment
+import com.swjjang7.searchcontentbykakao.ui.base.ShareViewModel
+import com.swjjang7.searchcontentbykakao.ui.extension.repeatOnStarted
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class SearchListFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
@@ -15,6 +20,8 @@ class SearchListFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     companion object {
         fun newInstance() = SearchListFragment()
     }
+
+    private val shareViewModel: ShareViewModel by activityViewModels()
 
     private val listAdapter by lazy {
         SearchListAdapter(viewModel)
@@ -47,6 +54,18 @@ class SearchListFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     override fun initViewModel(binding: FragmentSearchBinding, viewModel: SearchViewModel) {
-//        TODO("Not yet implemented")
+        repeatOnStarted {
+            shareViewModel.share.collectLatest {
+                (it as? List<FavoriteContent>)?.let { list ->
+                    viewModel.updateFavoriteContents(list)
+                }
+            }
+        }
+
+        repeatOnStarted {
+            viewModel.favoriteUpdate.collectLatest {
+                shareViewModel.invokeUpdateNotify()
+            }
+        }
     }
 }

@@ -8,13 +8,17 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.swjjang7.searchcontentbykakao.BR
 import com.swjjang7.searchcontentbykakao.R
 import com.swjjang7.searchcontentbykakao.databinding.ActivityMainBinding
+import com.swjjang7.searchcontentbykakao.ui.base.ShareViewModel
+import com.swjjang7.searchcontentbykakao.ui.extension.repeatOnStarted
 import com.swjjang7.searchcontentbykakao.ui.favorite.FavoriteListFragment
 import com.swjjang7.searchcontentbykakao.ui.search.SearchListFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
+    private val shareViewModel: ShareViewModel by viewModels()
 
     private val fragmentList = listOf(
         SearchListFragment.newInstance(),
@@ -37,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
         initLayout(binding)
+        initViewModel(viewModel, binding)
     }
 
     private fun initLayout(binding: ActivityMainBinding) {
@@ -50,7 +55,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewModel(viewModel: MainViewModel, binding: ActivityMainBinding) {
+        repeatOnStarted {
+            shareViewModel.setUpdateFunc {
+                viewModel.fetchFavoriteContents()
+            }
+        }
 
+        repeatOnStarted {
+            viewModel.favoriteContents.collectLatest {
+                shareViewModel.updateNotify(it)
+            }
+        }
+
+        viewModel.fetchFavoriteContents()
     }
 
     private fun getTabName(position: Int): String {
