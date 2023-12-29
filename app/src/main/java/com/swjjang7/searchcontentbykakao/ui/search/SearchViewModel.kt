@@ -117,7 +117,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun nextPageLoadable(position: Int): Boolean {
-        if (!isLoading()) {
+        if (isLoading()) {
             return false
         }
 
