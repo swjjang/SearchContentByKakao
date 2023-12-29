@@ -3,4 +3,6 @@
     <string name="hint_input_keyword">검색어를 입력하세요.</string>
     <string name="empty_search_list">검색 목록이 없습니다.</string>
     <string name="empty_favorite_list">좋아요 목록이 없습니다.</string>
+    <string name="tab_search">검색결과</string>
+    <string name="tab_favorite">좋아요.</string>
 </resources>

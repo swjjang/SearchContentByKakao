@@ -3,7 +3,9 @@ package com.swjjang7.searchcontentbykakao.ui.favorite
 import com.swjjang7.searchcontentbykakao.R
 import com.swjjang7.searchcontentbykakao.databinding.FragmentFavoriteBinding
 import com.swjjang7.searchcontentbykakao.ui.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoriteListFragment : BaseFragment<FragmentFavoriteBinding, FavoriteViewModel>(
     R.layout.fragment_favorite,
     FavoriteViewModel::class.java

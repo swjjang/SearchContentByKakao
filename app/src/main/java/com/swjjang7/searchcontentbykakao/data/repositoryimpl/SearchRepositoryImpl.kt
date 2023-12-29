@@ -16,10 +16,7 @@ import com.swjjang7.searchcontentbykakao.domain.model.onError
 import com.swjjang7.searchcontentbykakao.domain.model.onSuccess
 import com.swjjang7.searchcontentbykakao.domain.repository.SearchRepository
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
@@ -35,21 +32,21 @@ class SearchRepositoryImpl @Inject constructor(
         searchQuery: String,
         page: Int,
         size: Int,
-        requestImage: Boolean,
-        requestVideo: Boolean
+        skipImage: Boolean,
+        skipVideo: Boolean
     ): Flow<ApiResult<SearchResult>> {
         return flow {
             val favoriteContents = favoriteLocalDataSource.getList()
-            val videoFlow = if (requestVideo) {
-                searchRemoteDataSource.getVideos(searchQuery, page, size)
-            } else {
+            val videoFlow = if (skipVideo) {
                 emptyVideoFlow()
+            } else {
+                searchRemoteDataSource.getVideos(searchQuery, page, size)
             }
 
-            val imageFlow = if (requestImage) {
-                searchRemoteDataSource.getImages(searchQuery, page, size)
-            } else {
+            val imageFlow = if (skipImage) {
                 emptyImageFlow()
+            } else {
+                searchRemoteDataSource.getImages(searchQuery, page, size)
             }
 
             videoFlow.zip(imageFlow) { videoResult, imageResult ->

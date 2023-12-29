@@ -5,5 +5,6 @@ data class Content(
     val imageUrl: String,
     val dateTime: String,
     val isFavorite: Boolean = false,
+    val description: String? = null,
 ) {
 }

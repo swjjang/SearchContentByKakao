@@ -5,11 +5,23 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="com.swjjang7.searchcontentbykakao.domain.model.Content" />
+
+        <variable
+            name="adapter"
+            type="com.swjjang7.searchcontentbykakao.ui.search.SearchListAdapter" />
+
+        <variable
+            name="vm"
+            type="com.swjjang7.searchcontentbykakao.ui.search.SearchViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".SearchFragment">
 
         <EditText
             android:id="@+id/inputKeyword"
@@ -21,23 +33,49 @@
             android:gravity="center_vertical"
             android:hint="@string/hint_input_keyword"
             android:inputType="text"
+            android:onTextChanged="@{(s,start,before,count) -> vm.changeInputKeyword(s.toString())}"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/recyclerView"
+            app:layout_constraintBottom_toTopOf="@id/barrier"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            app:constraint_referenced_ids="inputKeyword"
+            app:barrierDirection="bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/firstHeader"
+            app:layout_constraintTop_toBottomOf="@id/barrier"
+            app:layout_constraintBottom_toTopOf="@id/recyclerView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@color/gray"
+            android:text="@string/tab_search"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:padding="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
+            android:adapter="@{adapter}"
             android:orientation="vertical"
+            android:visibility="@{vm.contents == null || vm.contents.size() == 0 ? View.GONE : View.VISIBLE}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/inputKeyword" />
+            app:layout_constraintTop_toBottomOf="@id/firstHeader"
+            app:submitList="@{vm.contents}"
+            tools:listitem="@layout/list_item_content"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/empty"
@@ -47,10 +85,12 @@
             android:gravity="center"
             android:text="@string/empty_search_list"
             android:textColor="@color/black"
-            android:textSize="28dp"
+            android:textSize="28sp"
+            android:visibility="@{vm.contents == null || vm.contents.size() == 0 ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/inputKeyword" />
+            app:layout_constraintTop_toBottomOf="@id/barrier"
+            tools:visibility="gone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

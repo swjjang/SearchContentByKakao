@@ -26,7 +26,7 @@ class FavoriteViewModel @Inject constructor(
     private fun fetchFavoriteContents() {
         showLoading(true)
 
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             getFavoriteContentsUseCase().catch {
                 emit(
                     ApiResult.Error.Unknown(it)
@@ -44,7 +44,7 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun removeFavoriteContent(favoriteContent: FavoriteContent) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             removeFavoriteContentsUseCase(favoriteContent)
         }
     }
