@@ -5,7 +5,6 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.imageview.ShapeableImageView
 import com.swjjang7.searchcontentbykakao.R
 import com.swjjang7.searchcontentbykakao.ui.extension.dp
@@ -20,7 +19,7 @@ fun loadImage(view: AppCompatImageView, url: String?) {
 }
 
 @BindingAdapter("roundCorner")
-fun bindCornerRound(
+fun bindRoundCorner(
     view: ShapeableImageView,
     round: Double = 0.0,
 ) {
