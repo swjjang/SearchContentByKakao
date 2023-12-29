@@ -58,7 +58,8 @@ class SearchViewModel @Inject constructor(
                 result.onSuccess {
                     showLoading(false)
 
-                    requestParam = param.copy(isImageEnd = it.isImageEnd, isVideoEnd = it.isVideoEnd)
+                    requestParam =
+                        param.copy(isImageEnd = it.isImageEnd, isVideoEnd = it.isVideoEnd)
 
                     val list = contents.value.addHeaderList(it.contents, param.page)
                     _contents.emit(list)
@@ -89,18 +90,19 @@ class SearchViewModel @Inject constructor(
 
         if (::inputTextJob.isInitialized) {
             inputTextJob.cancel()
-        } else {
-            inputTextJob = viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-                delay(500)
+        }
 
-                requestParam = RequestParam(inputText = s)
-                _contents.emit(emptyList())
+        inputTextJob = viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+            delay(500)
 
-                if (s.isNotEmpty()) {
-                    fetchContents(requestParam)
-                }
+            requestParam = RequestParam(inputText = s)
+            _contents.emit(emptyList())
+
+            if (s.isNotEmpty()) {
+                fetchContents(requestParam)
             }
         }
+
 
     }
 
@@ -114,7 +116,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun nextPageLoadable(position: Int) : Boolean {
+    fun nextPageLoadable(position: Int): Boolean {
         if (!isLoading()) {
             return false
         }

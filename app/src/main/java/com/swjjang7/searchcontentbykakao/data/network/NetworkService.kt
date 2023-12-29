@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface NetworkService {
     companion object {
-        const val BASE_URL = "https://newsapi.org/"
+        const val BASE_URL = "https://dapi.kakao.com"
         private const val REST_API_KEY = "c86afa1428dcf896a0d6d2d981977bc0"
         const val AUTHORIZATION = "KakaoAK $REST_API_KEY"
         const val DEFAULT_PAGE_SIZE = 10
