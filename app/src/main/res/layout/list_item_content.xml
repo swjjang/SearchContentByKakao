@@ -88,7 +88,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
             android:background="@color/white_a50"
-            android:text="@{String.valueOf(position)}"
+            android:text="@{String.valueOf(position + 1)}"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
