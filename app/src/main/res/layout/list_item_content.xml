@@ -74,7 +74,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="20dp"
             android:background="@color/white_a50"
-            android:text="@{item.dateTime}"
+            app:date="@{item.dateTime}"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
