@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -61,7 +60,7 @@ class SearchViewModel @Inject constructor(
                 param.pageSize,
                 param.isImageEnd,
                 param.isVideoEnd
-            ).collectLatest { result ->
+            ).collect { result ->
                 result.onSuccess {
                     showLoading(false)
 
