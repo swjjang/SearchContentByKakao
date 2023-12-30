@@ -7,8 +7,8 @@ import com.swjjang7.searchcontentbykakao.R
 import com.swjjang7.searchcontentbykakao.databinding.FragmentSearchBinding
 import com.swjjang7.searchcontentbykakao.domain.model.FavoriteContent
 import com.swjjang7.searchcontentbykakao.ui.base.BaseFragment
-import com.swjjang7.searchcontentbykakao.ui.base.ShareViewModel
 import com.swjjang7.searchcontentbykakao.ui.extension.repeatOnStarted
+import com.swjjang7.searchcontentbykakao.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -21,7 +21,7 @@ class SearchListFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         fun newInstance() = SearchListFragment()
     }
 
-    private val shareViewModel: ShareViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private val listAdapter by lazy {
         SearchListAdapter(viewModel)
@@ -55,7 +55,7 @@ class SearchListFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     override fun initViewModel(binding: FragmentSearchBinding, viewModel: SearchViewModel) {
         repeatOnStarted {
-            shareViewModel.share.collectLatest {
+            mainViewModel.favoriteContents.collectLatest {
                 (it as? List<FavoriteContent>)?.let { list ->
                     viewModel.updateFavoriteContents(list)
                 }
@@ -64,7 +64,7 @@ class SearchListFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
         repeatOnStarted {
             viewModel.favoriteUpdate.collectLatest {
-                shareViewModel.invokeUpdateNotify()
+                mainViewModel.fetchFavoriteContents()
             }
         }
     }
