@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-open class BaseViewModel: ViewModel() {
+open class BaseViewModel : ViewModel() {
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading
 
@@ -19,8 +19,8 @@ open class BaseViewModel: ViewModel() {
     val toast: SharedFlow<String> = _toast
 
     protected val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-        Log.d("SearchContentByKakao","exception : $exception")
-        when(exception) {
+        Log.d("SearchContentByKakao", "exception : $exception")
+        when (exception) {
             is CancellationException -> showToast("작업이 취소 되었습니다.")
             else -> showToast(exception.message ?: "$exception")
         }

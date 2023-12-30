@@ -27,7 +27,7 @@ class ShareViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun setUpdateFunc(func : (() -> Unit)?) {
+    fun setUpdateFunc(func: (() -> Unit)?) {
         _updateFunc = func
     }
 }

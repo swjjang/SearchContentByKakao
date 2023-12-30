@@ -26,4 +26,4 @@ data class ImageItemDto(
     @SerializedName(value = "display_sitename") val displaySitename: String,
     @SerializedName(value = "doc_url") val docUrl: String,
     @SerializedName(value = "datetime") val dateTime: String,
-): Parcelable
+) : Parcelable

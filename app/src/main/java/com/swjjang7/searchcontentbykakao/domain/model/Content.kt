@@ -6,5 +6,4 @@ data class Content(
     val dateTime: String,
     val isFavorite: Boolean = false,
     val description: String? = null,
-) {
-}
+)

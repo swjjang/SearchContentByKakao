@@ -9,4 +9,4 @@ data class MetaDto(
     @SerializedName(value = "total_count") val totalCount: Int,
     @SerializedName(value = "pageable_count") val pageableCount: Int,
     @SerializedName(value = "is_end") val isEnd: Boolean,
-): Parcelable
+) : Parcelable

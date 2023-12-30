@@ -17,8 +17,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getFavoriteContentsUseCase: GetFavoriteContentsUseCase,
-): BaseViewModel() {
-    private val _favoriteContents: MutableStateFlow<List<FavoriteContent>> = MutableStateFlow(listOf())
+) : BaseViewModel() {
+    private val _favoriteContents: MutableStateFlow<List<FavoriteContent>> =
+        MutableStateFlow(listOf())
     val favoriteContents: StateFlow<List<FavoriteContent>> = _favoriteContents
 
     fun fetchFavoriteContents() {

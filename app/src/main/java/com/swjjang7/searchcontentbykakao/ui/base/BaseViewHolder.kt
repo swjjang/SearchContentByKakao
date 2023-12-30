@@ -7,7 +7,7 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.swjjang7.searchcontentbykakao.BR
 
-class BaseViewHolder<T>(val binding: ViewDataBinding): RecyclerView.ViewHolder(binding.root) {
+class BaseViewHolder<T>(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
     init {
         itemView.doOnAttach {
             binding.lifecycleOwner = itemView.findViewTreeLifecycleOwner()

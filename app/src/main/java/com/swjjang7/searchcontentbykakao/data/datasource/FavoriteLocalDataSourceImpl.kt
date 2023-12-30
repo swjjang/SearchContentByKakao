@@ -11,5 +11,6 @@ class FavoriteLocalDataSourceImpl @Inject constructor(
 
     override suspend fun add(favoriteContent: FavoriteContent) = preferences.add(favoriteContent)
 
-    override suspend fun remove(favoriteContent: FavoriteContent) = preferences.remove(favoriteContent)
+    override suspend fun remove(favoriteContent: FavoriteContent) =
+        preferences.remove(favoriteContent)
 }

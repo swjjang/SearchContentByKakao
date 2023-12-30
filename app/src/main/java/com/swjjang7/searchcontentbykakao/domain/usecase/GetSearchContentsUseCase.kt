@@ -9,7 +9,13 @@ import javax.inject.Inject
 class GetSearchContentsUseCase @Inject constructor(
     private val searchRepository: SearchRepository,
 ) {
-    operator fun invoke(searchText: String, page: Int, size: Int, skipImage: Boolean, skipVideo: Boolean): Flow<ApiResult<SearchResult>> {
+    operator fun invoke(
+        searchText: String,
+        page: Int,
+        size: Int,
+        skipImage: Boolean,
+        skipVideo: Boolean
+    ): Flow<ApiResult<SearchResult>> {
         return searchRepository.getContents(searchText, page, size, skipImage, skipVideo)
     }
 }

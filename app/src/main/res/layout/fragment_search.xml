@@ -42,24 +42,24 @@
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
-            app:constraint_referenced_ids="inputKeyword"
-            app:barrierDirection="bottom"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="inputKeyword" />
 
         <TextView
             android:id="@+id/firstHeader"
-            app:layout_constraintTop_toBottomOf="@id/barrier"
-            app:layout_constraintBottom_toTopOf="@id/recyclerView"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:background="@color/gray"
+            android:padding="10dp"
             android:text="@string/tab_search"
             android:textColor="@color/white"
             android:textSize="12sp"
-            android:padding="10dp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintBottom_toTopOf="@id/recyclerView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barrier" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

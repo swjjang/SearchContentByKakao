@@ -1,8 +1,8 @@
 package com.swjjang7.searchcontentbykakao.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.tabs.TabLayoutMediator
 import com.swjjang7.searchcontentbykakao.BR
